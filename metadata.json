@@ -1,0 +1,6 @@
+{
+  "name": "ميزانية الجامعة",
+  "description": "تطبيق إدارة ميزانية ذكي متكامل",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
