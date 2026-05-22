@@ -13,10 +13,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
+      - name: Create dummy debug keystore
+        # هذا الأمر ينشئ ملف توقيع فارغ في المسار الذي يبحث عنه النظام
+        run: |
+          keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          mv debug.keystore app/debug.keystore
+          
       - name: Build with Gradle
-        # نستخدم gradle مباشرة لتفادي مشكلة ملف gradlew
-        # ونضيف -x validateSigningDebug لتجاهل خطأ التوقيع المفقود
-        run: gradle assembleDebug -x validateSigningDebug
+        run: gradle assembleDebug
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
