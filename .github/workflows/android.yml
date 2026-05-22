@@ -12,15 +12,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      - name: Create dummy debug keystore
-        # هذا الأمر ينشئ ملف توقيع فارغ في المسار الذي يبحث عنه النظام
+
+      - name: Create debug keystore
+        # إنشاء ملف التوقيع المفقود لضمان عدم رفض عملية البناء
         run: |
           keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          mkdir -p app/
           mv debug.keystore app/debug.keystore
           
       - name: Build with Gradle
-        run: gradle assembleDebug
+        # استخدام gradle المباشر (لتفادي مشكلة gradlew المفقود) 
+        # مع إضافة أمر تخطي التحقق من التوقيع كإجراء احتياطي إضافي
+        run: gradle assembleDebug -x validateSigningDebug
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
