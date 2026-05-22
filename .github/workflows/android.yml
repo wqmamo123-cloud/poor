@@ -13,12 +13,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Grant execute permission
-        run: chmod +x gradlew || true
-        
       - name: Build with Gradle
-        # هذا الأمر يتجاهل التحقق من التوقيع بالكامل
-        run: ./gradlew assembleDebug -x validateSigningDebug
+        # نستخدم gradle مباشرة لتفادي مشكلة ملف gradlew
+        # ونضيف -x validateSigningDebug لتجاهل خطأ التوقيع المفقود
+        run: gradle assembleDebug -x validateSigningDebug
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
