@@ -13,13 +13,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Generate missing gradlew file
-        run: gradle wrapper
-          
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Grant execute permission
+        run: chmod +x gradlew || true
         
       - name: Build with Gradle
+        # هذا الأمر يتجاهل التحقق من التوقيع بالكامل
         run: ./gradlew assembleDebug -x validateSigningDebug
         
       - name: Upload APK
